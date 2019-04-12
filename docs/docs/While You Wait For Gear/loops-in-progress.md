@@ -291,3 +291,6 @@ List of people who are working on closed loops:
 - Jakub Tomaszczyk (Gold Coast, Australia)
 - Andrew Hopkins (Newcastle, Australia)
 - Robert Clark (Canberra, Australia)
+- David Vanier (Saratoga Springs, NY, USA)
+- Kirsten Otis (Guelph, Ontario, Canada)
+- Natalia Stanichevsky (Ontario, Canada)

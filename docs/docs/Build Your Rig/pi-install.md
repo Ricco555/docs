@@ -91,6 +91,8 @@ Now we will select a Raspian-compatible updated branch by using `cd ~/src/oref0 
 
 ### Finish installation ###
 
+First, update npm to the latest version. Run `npm install npm@latest -g`. 
+
 Now run `npm run global-install`.  After about 10-15 minutes, the installations will end and you will be dropped off at the `root@yourrigname:~/src/oref0#` prompt.  Successful completion of this step should look like below.
 
 !["install piBakery"](../Images/build-your-rig/pi-install-success.png)
@@ -108,6 +110,29 @@ Answer all the setup questions.  A successful setup script will finish asking yo
 Once your setup script finishes, **make sure to [watch the pump loop logs](http://openaps.readthedocs.io/en/latest/docs/Build%20Your%20Rig/OpenAPS-install.html#step-5-watch-your-pump-loop-log)**
 
 **NOTE**: If you are using RFM69HCW as RF module:
+
+If you have connected your RFM69HCW module as described in [Soldering RFM69HCW](https://openaps.readthedocs.io/en/latest/docs/Gear%20Up/edison.html#soldering), while running interactive setup use following options:
+```Are you using an Explorer Board? [Y]/n n
+Are you using an Explorer HAT? [Y]/n n
+Are you using mmeowlink (i.e. with a TI stick)? If not, press enter. If so, paste your full port address: it looks like "/dev/ttySOMETHING" without the quotes.
+What is your TTY port? /dev/spidev0.0
+Ok, TTY /dev/spidev0.0 it is. 
+
+Would you like to [D]ownload released precompiled Go pump communication library or install an [U]nofficial (possibly untested) version.[D]/U u
+You could either build the Medtronic library from [S]ource, or type the version tag you would like to use, example 'v2018.08.08' [S]/<version> s
+Building Go pump binaries from source
+What type of radio do you use? [1] for cc1101 [2] for CC1110 or CC1111 [3] for RFM69HCW radio module 1/[2]/3 3
+Building Go pump binaries from source with  + radiotags +  tags.
+```
+after running oref0-setup.sh run the following:
+```$ cd ~ && export PATH="$PATH:/usr/local/go/bin"
+$ rm -rf ~/go/src/github.com/ecc1
+$ go get -u -v -tags "rfm69 walrus" github.com/ecc1/medtronic/...
+$ cp -pruv $HOME/go/bin/* /usr/local/bin/
+$ mv /usr/local/bin/mmtune /usr/local/bin/Go-mmtune
+```
+This will help in building the right pump communication libraries.
+
 * You'll want to also delete the openaps-menu folder to avoid error messages in your logs. `rm -rf ~/src/openaps-menu/`
 * If you experience something like this:
 ```mmtune: radio_locale = WW
@@ -131,7 +156,7 @@ Following the [install instructions](https://www.raspberrypi.org/documentation/i
 
 Once Etcher has finished writing the image to the microSD card, remove the microSD card from your computer and plug it right back in, so the boot partition shows up in Finder / Explorer.
 
-Create a file named wpa_supplicant.conf on the boot drive, with your wifi network(s) configured.  It should look something like:
+Create a file named wpa_supplicant.conf on the boot drive, with your wifi network(s) configured.  The file must be in a Unix format.  If creating the file in Windows, use an editor that allows you to save the file in Unix format instead of DOS format. There are many editors with this ability. `Notepad++` is one that works well. The file should look something like:
 
 ```
 country=xx
